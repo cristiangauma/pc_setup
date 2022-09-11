@@ -32,6 +32,23 @@
           - awscli
           - pipenv
 
+    - name: Ensure fonts directory exist.
+      file:
+        path: "{{ lookup('env', 'HOME') }}/.fonts"
+        state: directory
+
+    - name: Ensure hack fonts exist
+      shell: "ls {{ lookup('env', 'HOME') }}/.fonts/Hack*Nerd*Font*Complete*"
+      register: hack_exists
+      ignore_errors: yes
+
+    - name: Download Hack nerd font
+      when: hack_exists is failed
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
+        dest: "{{ lookup('env', 'HOME') }}/.fonts/"
+        remote_src: yes
+
     - name: Install powerlevel10k
       ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
       args:
@@ -127,23 +144,6 @@
         owner: cristian
         group: cristian
         mode: '0644'
-      
-    - name: Ensure fonts directory exist.
-      file:
-        path: "{{ lookup('env', 'HOME') }}/.fonts"
-        state: directory
 
-    - name: Ensure hack fonts exist
-      shell: "ls {{ lookup('env', 'HOME') }}/.fonts/Hack*Nerd*Font*Complete*"
-      register: hack_exists
-      ignore_errors: yes
-
-    - name: Download Hack nerd font
-      when: hack_exists is failed
-      ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
-        dest: "{{ lookup('env', 'HOME') }}/.fonts/"
-        remote_src: yes
-      
     - name: Update tldr cache
       ansible.builtin.shell: tldr --update
