@@ -32,6 +32,11 @@
           - awscli
           - pipenv
 
+    - name: Install powerlevel10k
+      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+      args:
+        creates: $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+
     - name: Install oh-my-zsh for my user
       ansible.builtin.include_role:
         name: gantsign.oh-my-zsh
@@ -49,6 +54,7 @@
                 - zsh_reload
                 - zsh-autosuggestions
                 - zsh-syntax-highlighting
+              theme: powerlevel10k/powerlevel10k
 
     - name: Add the flathub flatpak repository remote to the user installation
       community.general.flatpak_remote:
@@ -132,7 +138,7 @@
       register: hack_exists
       ignore_errors: yes
 
-    - name: Download Hack
+    - name: Download Hack nerd font
       when: hack_exists is failed
       ansible.builtin.unarchive:
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
