@@ -1,11 +1,18 @@
 PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
+#
+# Alias definition
+#
 alias cat="bat"
 alias ls="lsd"
-alias tail="multitail"
 alias diff="colordiff"
 
-gsm () {  # Switch to main or master branch
+#
+# Functions
+#
+
+# Automatically checkout main or master of a repository
+gsm () {  
   git branch --list | grep -q ' master$'
   if   [[ $? -eq 0 ]]; then git checkout master
   elif [[ $? -ne 0 ]]; then git branch --list | grep -q ' main$'
@@ -15,8 +22,20 @@ gsm () {  # Switch to main or master branch
   fi
 }
 
+
+# Get last public tag of a repository
 getLastTag() {
   _repo=$1
   echo -n "Latest $(echo $1 | rev | cut -d'/' -f 1 | rev) tag: "
   git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' "${1}" | awk '{ print $2 }' | sed 's:refs/tags/::' | tail -n1
 }
+
+#
+# Only ask ssh key key once per session login
+#
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l > /dev/null || ssh-add
