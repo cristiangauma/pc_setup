@@ -24,7 +24,8 @@
           - multitail
           - yq
           - tealdeer
-    
+          - gnome-keyring
+
     - name: Install pip packages
       ansible.builtin.pip:
         name:
@@ -37,6 +38,17 @@
       vars:
         users:
           - username: cristian
+            oh_my_zsh:
+              plugins:
+                - colored-man-pages
+                - command-not-found
+                - docker
+                - pep8
+                - pip
+                - sudo
+                - zsh_reload
+                - zsh-autosuggestions
+                - zsh-syntax-highlighting
 
     - name: Add the flathub flatpak repository remote to the user installation
       community.general.flatpak_remote:
@@ -126,3 +138,6 @@
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
         dest: "{{ lookup('env', 'HOME') }}/.fonts/"
         remote_src: yes
+      
+    - name: Update tldr cache
+      ansible.builtin.shell: tldr --update
