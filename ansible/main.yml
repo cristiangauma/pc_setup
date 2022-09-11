@@ -4,28 +4,26 @@
     - name: Install desired system packages
       become: yes
       community.general.zypper:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - zsh
-        - git
-        - make
-        - yast2-docker
-        - rclone
-        - mono-complete
-        - htop
-        - ncdu
-        - telnet
-        - whois
-        - bat
-        - jq
-        - lsd
-        - onedrive
-        - curl
-        - colordiff
-        - multitail
-        - yq
-        - tealdeer
+        name: 
+          - zsh
+          - git
+          - make
+          - yast2-docker
+          - rclone
+          - mono-complete
+          - htop
+          - ncdu
+          - telnet
+          - whois
+          - bat
+          - jq
+          - lsd
+          - onedrive
+          - curl
+          - colordiff
+          - multitail
+          - yq
+          - tealdeer
     
     - name: Install pip packages
       ansible.builtin.pip:
