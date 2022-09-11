@@ -1,0 +1,22 @@
+PATH=$HOME/.local/bin:$HOME/bin:$PATH
+
+alias cat="bat"
+alias ls="lsd"
+alias tail="multitail"
+alias diff="colordiff"
+
+gsm () {  # Switch to main or master branch
+  git branch --list | grep -q ' master$'
+  if   [[ $? -eq 0 ]]; then git checkout master
+  elif [[ $? -ne 0 ]]; then git branch --list | grep -q ' main$'
+    if [[ $? -eq 0 ]]; then git checkout main; fi
+  else  # neither exists
+    echo "ERROR: not found neither branch master nor main"
+  fi
+}
+
+getLastTag() {
+  _repo=$1
+  echo -n "Latest $(echo $1 | rev | cut -d'/' -f 1 | rev) tag: "
+  git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' "${1}" | awk '{ print $2 }' | sed 's:refs/tags/::' | tail -n1
+}

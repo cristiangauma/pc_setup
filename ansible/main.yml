@@ -1,0 +1,130 @@
+---
+- hosts: all
+  tasks:
+    - name: Install desired system packages
+      become: yes
+      community.general.zypper:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - zsh
+        - git
+        - make
+        - yast2-docker
+        - rclone
+        - mono-complete
+        - htop
+        - ncdu
+        - telnet
+        - whois
+        - bat
+        - jq
+        - lsd
+        - onedrive
+        - curl
+        - colordiff
+        - multitail
+        - yq
+        - tealdeer
+    
+    - name: Install pip packages
+      ansible.builtin.pip:
+        name:
+          - awscli
+          - pipenv
+
+    - name: Install oh-my-zsh for my user
+      ansible.builtin.include_role:
+        name: gantsign.oh-my-zsh
+      vars:
+        users:
+          - username: cristian
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    - name: Install desired flatpak from flathub
+      community.general.flatpak:
+        name:
+          - com.bitwarden.desktop
+          - com.getpostman.Postman
+          - com.github.tchx84.Flatseal
+          - com.github.unrud.VideoDownloader
+          - com.jgraph.drawio.desktop
+          - com.microsoft.Edge
+          - com.spotify.Client
+          - net.ankiweb.Anki
+          - net.cozic.joplin_desktop
+          - org.cryptomator.Cryptomator
+          - org.ferdium.Ferdium
+          - org.filezillaproject.Filezilla
+          - org.gimp.GIMP
+          - org.gnome.meld
+          - org.kde.krdc
+          - org.kde.krita
+          - org.mozilla.Thunderbird
+          - org.telegram.desktop
+          - org.wireshark.Wireshark
+          - com.github.muriloventuroso.easyssh
+          - io.dbeaver.DBeaverCommunity
+          - io.dbeaver.DBeaverCommunity.Client.pgsql
+          - org.raspberrypi.rpi-imager
+          - org.remmina.Remmina
+          - org.keepassxc.KeePassXC
+          - org.gnome.Boxes
+          - org.gnome.Boxes.Extension.OsinfoDb
+
+    - name: Change default shell to zsh for the user
+      become: yes
+      user:
+        name: "cristian"
+        shell: /bin/zsh
+
+    - name: Add custon zsh configuration in a separated file
+      ansible.builtin.lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.zshrc"
+        line: ". ~/.zsh_custom_configuration"
+        owner: cristian
+        regexp: '^\. ~/\.zsh_custom_configuration$'
+        state: present
+        insertafter: EOF
+        create: True
+    
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }}/bin"
+        state: directory
+        mode: '0755'
+      
+    - name: Install Just command
+      ansible.builtin.shell: curl https://just.systems/install.sh | bash -s -- --to {{ lookup('env', 'HOME') }}/bin/
+      args:
+        creates: "{{ lookup('env', 'HOME') }}/bin/just"
+
+    - name: Ensure ~/.custom_zsh_configuration exists with the desired content
+      ansible.builtin.copy:
+        src: files/zsh_custom_configuration
+        dest: "{{ lookup('env', 'HOME') }}/.zsh_custom_configuration"
+        owner: cristian
+        group: cristian
+        mode: '0644'
+      
+    - name: Ensure fonts directory exist.
+      file:
+        path: "{{ lookup('env', 'HOME') }}/.fonts"
+        state: directory
+
+    - name: Ensure hack fonts exist
+      shell: "ls {{ lookup('env', 'HOME') }}/.fonts/Hack*Nerd*Font*Complete*"
+      register: hack_exists
+      ignore_errors: yes
+
+    - name: Download Hack
+      when: hack_exists is failed
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
+        dest: "{{ lookup('env', 'HOME') }}/.fonts/"
+        remote_src: yes
