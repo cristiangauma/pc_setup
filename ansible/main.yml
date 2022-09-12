@@ -110,11 +110,13 @@
           - org.gnome.Boxes
           - org.gnome.Boxes.Extension.OsinfoDb
 
-    - name: Change default shell to zsh for the user
+    - name: Configure shell and groups in my user
       become: yes
-      user:
+      ansible.builtin.user:
         name: "cristian"
         shell: /bin/zsh
+        groups: docker
+        append: yes
 
     - name: Add custon zsh configuration in a separated file
       ansible.builtin.lineinfile:
