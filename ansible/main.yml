@@ -80,6 +80,7 @@
         flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
     - name: Install desired flatpak from flathub
+      become: yes
       community.general.flatpak:
         name:
           - com.bitwarden.desktop
