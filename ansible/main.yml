@@ -1,6 +1,11 @@
 ---
 - hosts: all
   tasks:
+    - name: Update all packages
+      community.general.zypper:
+        name: '*'
+        state: latest
+
     - name: Install desired system packages
       become: yes
       community.general.zypper:
