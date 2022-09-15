@@ -4,6 +4,7 @@ PATH=$HOME/.local/bin:$HOME/bin:$PATH
 # Alias definition
 #
 alias cat="bat"
+alias ccat="cat"
 alias ls="lsd"
 alias diff="colordiff"
 

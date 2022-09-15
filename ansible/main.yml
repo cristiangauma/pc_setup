@@ -2,6 +2,7 @@
 - hosts: all
   tasks:
     - name: Update all packages
+      become: yes
       community.general.zypper:
         name: '*'
         state: latest
@@ -30,12 +31,17 @@
           - yq
           - tealdeer
           - gnome-keyring
+          - minikube
+          - minikube-bash-completion
 
     - name: Install pip packages
       ansible.builtin.pip:
         name:
           - awscli
           - pipenv
+          - localstack
+          - terraform-local
+          - awscli-local
 
     - name: Ensure fonts directory exist.
       file:
@@ -54,11 +60,6 @@
         dest: "{{ lookup('env', 'HOME') }}/.fonts/"
         remote_src: yes
 
-    - name: Install powerlevel10k
-      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-      args:
-        creates: $HOME/.oh-my-zsh/custom/themes/powerlevel10k
-
     - name: Install oh-my-zsh for my user
       ansible.builtin.include_role:
         name: gantsign.oh-my-zsh
@@ -73,10 +74,12 @@
                 - pep8
                 - pip
                 - sudo
-                - zsh_reload
-                - zsh-autosuggestions
-                - zsh-syntax-highlighting
               theme: powerlevel10k/powerlevel10k
+
+    - name: Install powerlevel10k
+      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+      args:
+        creates: $HOME/.oh-my-zsh/custom/themes/powerlevel10k/README.md
 
     - name: Add the flathub flatpak repository remote to the user installation
       community.general.flatpak_remote:
@@ -145,6 +148,11 @@
       args:
         creates: "{{ lookup('env', 'HOME') }}/bin/just"
 
+    - name: Install kubectl
+      ansible.builtin.shell: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      args:
+        creates: "{{ lookup('env', 'HOME') }}/bin/kubectl"
+
     - name: Ensure ~/.custom_zsh_configuration exists with the desired content
       ansible.builtin.copy:
         src: files/zsh_custom_configuration
@@ -155,3 +163,9 @@
 
     - name: Update tldr cache
       ansible.builtin.shell: tldr --update
+
+    - name: Start and enable docker service.
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: yes
