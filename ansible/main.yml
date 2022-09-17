@@ -1,5 +1,33 @@
 ---
 - hosts: all
+  vars:
+    base_packages:
+      - zsh
+      - git
+      - make
+      - mono-complete
+      - htop
+      - ncdu
+      - telnet
+      - whois
+      - bat
+      - jq
+      - lsd
+      - curl
+      - colordiff
+      - multitail
+      - yq
+      - tealdeer
+      - terraform
+
+    host_packages:
+      - yast2-docker
+      - rclone
+      - onedrive
+      - gnome-keyring
+      - minikube
+      - minikube-bash-completion
+    
   tasks:
     - name: Update all packages
       become: yes
@@ -7,32 +35,17 @@
         name: '*'
         state: latest
 
-    - name: Install desired system packages
+    - name: Install desired system packages in WSL
       become: yes
       community.general.zypper:
-        name: 
-          - zsh
-          - git
-          - make
-          - yast2-docker
-          - rclone
-          - mono-complete
-          - htop
-          - ncdu
-          - telnet
-          - whois
-          - bat
-          - jq
-          - lsd
-          - onedrive
-          - curl
-          - colordiff
-          - multitail
-          - yq
-          - tealdeer
-          - gnome-keyring
-          - minikube
-          - minikube-bash-completion
+        name: "{{ base_packages }}"
+
+    - name: Install desired system packages in host
+      become: yes
+      community.general.zypper:
+        name: "{{ host_packages }}"
+      tags:
+        - host
 
     - name: Install pip packages
       ansible.builtin.pip:
@@ -86,6 +99,8 @@
         name: flathub
         state: present
         flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      tags:
+        - host
 
     - name: Install desired flatpak from flathub
       become: yes
@@ -118,6 +133,8 @@
           - org.keepassxc.KeePassXC
           - org.gnome.Boxes
           - org.gnome.Boxes.Extension.OsinfoDb
+      tags:
+        - host
 
     - name: Configure shell and groups in my user
       become: yes
@@ -126,6 +143,8 @@
         shell: /bin/zsh
         groups: docker
         append: yes
+      tags:
+        - host
 
     - name: Add custon zsh configuration in a separated file
       ansible.builtin.lineinfile:
@@ -152,8 +171,10 @@
       ansible.builtin.shell: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       args:
         creates: "{{ lookup('env', 'HOME') }}/bin/kubectl"
+      tags:
+        - host
 
-    - name: Ensure ~/.custom_zsh_configuration exists with the desired content
+    - name: Ensure ~/.zsh_custom_configuration exists with the desired content
       ansible.builtin.copy:
         src: files/zsh_custom_configuration
         dest: "{{ lookup('env', 'HOME') }}/.zsh_custom_configuration"
@@ -169,3 +190,5 @@
         name: docker
         state: started
         enabled: yes
+      tags:
+        - host
