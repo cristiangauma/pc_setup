@@ -19,6 +19,7 @@
       - yq
       - tealdeer
       - terraform
+      - vagrant
 
     host_packages:
       - yast2-docker
