@@ -33,6 +33,22 @@
           - gnome-keyring
           - minikube
           - minikube-bash-completion
+          - virtualbox
+          - pyenv
+          - gcc
+          - automake
+          - bzip2
+          - libbz2-devel
+          - xz
+          - xz-devel
+          - openssl-devel
+          - ncurses-devel
+          - readline-devel
+          - zlib-devel
+          - tk-devel
+          - libffi-devel
+          - sqlite3-devel
+          - make
 
     - name: Install pip packages
       ansible.builtin.pip:
@@ -124,7 +140,9 @@
       ansible.builtin.user:
         name: "cristian"
         shell: /bin/zsh
-        groups: docker
+        groups:
+          - docker
+          - vboxusers
         append: yes
 
     - name: Add custon zsh configuration in a separated file
