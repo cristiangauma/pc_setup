@@ -11,44 +11,43 @@
       become: yes
       community.general.zypper:
         name: 
-          - zsh
-          - git
-          - make
-          - yast2-docker
-          - rclone
-          - mono-complete
-          - htop
-          - ncdu
-          - telnet
-          - whois
+          - automake
           - bat
-          - jq
-          - lsd
-          - onedrive
-          - curl
+          - bzip2
           - colordiff
-          - multitail
-          - yq
-          - tealdeer
+          - curl
+          - gcc
+          - git
           - gnome-keyring
+          - htop
+          - jq
+          - libbz2-devel
+          - libffi-devel
+          - lsd
+          - make
           - minikube
           - minikube-bash-completion
-          - virtualbox
+          - mono-complete
+          - multitail
+          - ncdu
+          - ncurses-devel
+          - onedrive
+          - openssl-devel
           - pyenv
-          - gcc
-          - automake
-          - bzip2
-          - libbz2-devel
+          - rclone
+          - readline-devel
+          - sqlite3-devel
+          - tealdeer
+          - telnet
+          - tk-devel
+          - virtualbox
+          - whois
           - xz
           - xz-devel
-          - openssl-devel
-          - ncurses-devel
-          - readline-devel
+          - yast2-docker
+          - yq
           - zlib-devel
-          - tk-devel
-          - libffi-devel
-          - sqlite3-devel
-          - make
+          - zsh
 
     - name: Install pip packages
       ansible.builtin.pip:
@@ -58,6 +57,11 @@
           - localstack
           - terraform-local
           - awscli-local
+          - pyenv
+          - requests
+          - jsonpickle
+          - urllib3
+          - fabric3
 
     - name: Ensure fonts directory exist.
       file:
