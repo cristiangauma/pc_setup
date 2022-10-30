@@ -47,21 +47,24 @@
           - yast2-docker
           - yq
           - zlib-devel
+          - yt-dlp
+          - vagrant
+          - virtualbox
           - zsh
 
     - name: Install pip packages
       ansible.builtin.pip:
         name:
           - awscli
-          - pipenv
-          - localstack
-          - terraform-local
           - awscli-local
+          - fabric3
+          - jsonpickle
+          - localstack
+          - pipenv
           - pyenv
           - requests
-          - jsonpickle
+          - terraform-local
           - urllib3
-          - fabric3
 
     - name: Ensure fonts directory exist.
       file:
@@ -112,28 +115,31 @@
       community.general.flatpak:
         name:
           - com.bitwarden.desktop
+          - com.emqx.MQTTX
           - com.getpostman.Postman
           - com.github.tchx84.Flatseal
           - com.github.unrud.VideoDownloader
           - com.jgraph.drawio.desktop
           - com.microsoft.Edge
           - com.spotify.Client
+          - io.dbeaver.DBeaverCommunity
+          - io.dbeaver.DBeaverCommunity.Client.pgsql
           - net.ankiweb.Anki
           - net.cozic.joplin_desktop
+          - net.xmind.XMind
           - org.cryptomator.Cryptomator
           - org.filezillaproject.Filezilla
           - org.gimp.GIMP
-          - org.gnome.meld
-          - org.mozilla.Thunderbird
-          - org.telegram.desktop
-          - org.wireshark.Wireshark
-          - io.dbeaver.DBeaverCommunity
-          - io.dbeaver.DBeaverCommunity.Client.pgsql
-          - org.raspberrypi.rpi-imager
-          - org.remmina.Remmina
-          - org.keepassxc.KeePassXC
           - org.gnome.Boxes
           - org.gnome.Boxes.Extension.OsinfoDb
+          - org.gnome.meld
+          - org.keepassxc.KeePassXC
+          - org.mozilla.Thunderbird
+          - org.raspberrypi.rpi-imager
+          - org.remmina.Remmina
+          - org.telegram.desktop
+          - org.wireshark.Wireshark
+          - us.zoom.Zoom
 
     - name: Configure shell and groups in my user
       become: yes

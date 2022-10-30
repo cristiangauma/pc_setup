@@ -1,4 +1,4 @@
-PATH=$HOME/.local/bin:$HOME/bin:$PATH
+PATH=$(pyenv root)/shims:$HOME/.local/bin:$HOME/bin:$PATH
 
 #
 # Alias definition
