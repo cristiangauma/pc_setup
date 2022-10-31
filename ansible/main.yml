@@ -31,6 +31,7 @@
           - bat
           - bzip2
           - colordiff
+          - cronie
           - curl
           - gcc
           - git
@@ -73,11 +74,11 @@
         name:
           - awscli
           - awscli-local
+          - docker-compose
           - fabric3
           - jsonpickle
           - localstack
           - pipenv
-          - pyenv
           - requests
           - terraform-local
           - urllib3
