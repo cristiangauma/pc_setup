@@ -6,6 +6,22 @@
       community.general.zypper:
         name: '*'
         state: latest
+ 
+    - name: Add Visual Studio Code repository
+      become: yes
+      community.general.zypper_repository:
+        name: Vistual Studio Code
+        repo: 'https://packages.microsoft.com/yumrepos/vscode'
+        state: present
+        auto_import_keys: true
+    
+    - name: Add Tailscale repository
+      become: yes
+      community.general.zypper_repository:
+        name: Tailscale stable
+        repo: 'https://pkgs.tailscale.com/stable/opensuse/tumbleweed/$basearch'
+        state: present
+        auto_import_keys: true
 
     - name: Install desired system packages
       become: yes
