@@ -54,6 +54,7 @@
           - rclone
           - readline-devel
           - sqlite3-devel
+          - tailscale
           - tealdeer
           - telnet
           - tk-devel
