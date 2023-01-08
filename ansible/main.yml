@@ -184,11 +184,6 @@
         path: "{{ lookup('env', 'HOME') }}/bin"
         state: directory
         mode: '0755'
-      
-    - name: Install Just command
-      ansible.builtin.shell: curl https://just.systems/install.sh | bash -s -- --to {{ lookup('env', 'HOME') }}/bin/
-      args:
-        creates: "{{ lookup('env', 'HOME') }}/bin/just"
 
     - name: Install kubectl
       ansible.builtin.shell: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
