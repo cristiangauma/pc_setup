@@ -3,8 +3,6 @@ PATH=$(pyenv root)/shims:$HOME/.local/bin:$HOME/bin:$PATH
 #
 # Alias definition
 #
-alias cat="bat"
-alias ccat="/bin/cat"
 alias ls="lsd"
 alias diff="colordiff"
 
