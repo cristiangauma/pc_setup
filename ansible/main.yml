@@ -28,18 +28,29 @@
       community.general.zypper:
         name: 
           - automake
+          - avahi-compat-mDNSResponder-devel 
           - bat
           - bzip2
           - colordiff
           - cronie
           - curl
+          - flatpak
           - gcc
           - git
           - gnome-keyring
+          - gnome-software
+          - gstreamer-devel 
+          - gstreamer-plugins-bad 
+          - gstreamer-plugins-base-devel 
+          - gstreamer-plugins-libav 
+          - gstreamer-plugins-vaapi
           - htop
           - jq
           - libbz2-devel
           - libffi-devel
+          - libopenssl-devel 
+          - libplist-devel 
+          - libX11-devel 
           - lsd
           - make
           - minikube
@@ -58,17 +69,18 @@
           - tealdeer
           - telnet
           - tk-devel
+          - vagrant
+          - virtualbox
           - virtualbox
           - whois
           - xz
           - xz-devel
           - yast2-docker
           - yq
-          - zlib-devel
           - yt-dlp
-          - vagrant
-          - virtualbox
+          - zlib-devel
           - zsh
+
 
     - name: Install pip packages
       ansible.builtin.pip:
