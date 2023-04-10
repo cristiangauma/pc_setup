@@ -18,8 +18,7 @@
     - name: Add Tailscale repository
       become: yes
       community.general.zypper_repository:
-        name: Tailscale stable
-        repo: 'https://pkgs.tailscale.com/stable/opensuse/tumbleweed/$basearch'
+        repo: 'https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo'
         state: present
         auto_import_keys: true
 
@@ -32,6 +31,7 @@
           - bat
           - bzip2
           - colordiff
+          - code
           - cronie
           - curl
           - flatpak
@@ -198,7 +198,7 @@
         mode: '0755'
 
     - name: Install kubectl
-      ansible.builtin.shell: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      ansible.builtin.shell: curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o $HOME/bin/kubectl && chmod +x $HOME/bin/kubectl
       args:
         creates: "{{ lookup('env', 'HOME') }}/bin/kubectl"
 
