@@ -139,10 +139,12 @@
         name: flathub
         state: present
         flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
 
     - name: Install desired flatpak from flathub
-      become: yes
+      become: no
       community.general.flatpak:
+        state: present
         name:
           - com.bitwarden.desktop
           - com.emqx.MQTTX
@@ -170,6 +172,7 @@
           - org.telegram.desktop
           - org.wireshark.Wireshark
           - us.zoom.Zoom
+        method: user
 
     - name: Configure shell and groups in my user
       become: yes
