@@ -221,3 +221,9 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Start and enable tailscale service.
+      ansible.builtin.systemd:
+        name: tailscaled
+        state: started
+        enabled: yes

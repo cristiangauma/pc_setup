@@ -5,6 +5,7 @@ PATH=$(pyenv root)/shims:$HOME/.local/bin:$HOME/bin:$PATH
 #
 alias ls="lsd"
 alias diff="colordiff"
+alias open="xdg-open"
 
 #
 # Functions
@@ -20,7 +21,6 @@ gsm () {
     echo "ERROR: not found neither branch master nor main"
   fi
 }
-
 
 # Get last public tag of a repository
 getLastTag() {
