@@ -20,25 +20,20 @@
           - git
           - htop
           - jq
-          #- lsd
           - make
-          #- minikube
-          #- minikube-bash-completion
           - mono-complete
           - multitail
           - ncdu
-          #- pyenv
-          #- tealdeer
           - telnet
           - whois
-          #- xz
-          #- yq
-          #- yt-dlp
           - zsh
           - unzip
           - tmux
           - tmuxinator
+          - keychain
       
+    - name: Install lsd from their github page
+      ansible.builtin.shell: curl -L https://github.com/lsd-rs/lsd/releases/download/0.23.1/lsd_0.23.1_amd64.deb -o /tmp/lsd_0.23.1_amd64.deb && sudo dpkg -i /tmp/lsd_0.23.1_amd64.deb
 
     - name: Install pip packages
       ansible.builtin.pip:
@@ -49,6 +44,7 @@
           - poetry
           - requests
           - urllib3
+          - yt-dlp
 
     - name: Ensure fonts directory exist.
       file:
@@ -113,6 +109,14 @@
       ansible.builtin.copy:
         src: files/zsh_custom_configuration
         dest: "{{ lookup('env', 'HOME') }}/.zsh_custom_configuration"
+        owner: cristian
+        group: cristian
+        mode: '0644'
+    
+    - name: Ensure ~/.tmux.conf exists with the desired content
+      ansible.builtin.copy:
+        src: files/tmux.conf
+        dest: "{{ lookup('env', 'HOME') }}/.tmux.conf"
         owner: cristian
         group: cristian
         mode: '0644'
