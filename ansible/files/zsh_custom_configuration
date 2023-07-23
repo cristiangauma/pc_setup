@@ -31,3 +31,8 @@ getLastTag() {
 #
 keychain --nogui $HOME/.ssh/id_ed25519
 source $HOME/.keychain/$HOSTNAME-sh
+
+#
+# p10k
+#
+[[ ! -f  ~/.p10k.zsh ]] || source ~/.p10k.zsh

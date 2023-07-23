@@ -120,3 +120,11 @@
         owner: cristian
         group: cristian
         mode: '0644'
+
+    - name: Ensure ~/.p10k.zsh exists with the desired content
+      ansible.builtin.copy:
+        src: files/p10k.zsh
+        dest: "{{ lookup('env', 'HOME') }}/.p10k.zsh"
+        owner: cristian
+        group: cristian
+        mode: '0644'
