@@ -3,84 +3,42 @@
   tasks:
     - name: Update all packages
       become: yes
-      community.general.zypper:
+      ansible.builtin.package:
         name: '*'
         state: latest
- 
-    - name: Add Visual Studio Code repository
-      become: yes
-      community.general.zypper_repository:
-        name: Vistual Studio Code
-        repo: 'https://packages.microsoft.com/yumrepos/vscode'
-        state: present
-        auto_import_keys: true
-    
-    - name: Add Tailscale repository
-      become: yes
-      community.general.zypper_repository:
-        repo: 'https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo'
-        state: present
-        auto_import_keys: true
-
+      
     - name: Install desired system packages
       become: yes
-      community.general.zypper:
+      ansible.builtin.package:
         name: 
           - automake
-          - avahi-compat-mDNSResponder-devel 
           - bat
           - bzip2
           - colordiff
-          - code
-          - cronie
           - curl
-          - flatpak
           - gcc
           - git
-          - gnome-keyring
-          - gnome-software
-          - gstreamer-devel 
-          - gstreamer-plugins-bad 
-          - gstreamer-plugins-base-devel 
-          - gstreamer-plugins-libav 
-          - gstreamer-plugins-vaapi
           - htop
           - jq
-          - libbz2-devel
-          - libffi-devel
-          - libopenssl-devel 
-          - libplist-devel 
-          - libX11-devel 
-          - lsd
+          #- lsd
           - make
-          - minikube
-          - minikube-bash-completion
+          #- minikube
+          #- minikube-bash-completion
           - mono-complete
           - multitail
           - ncdu
-          - ncurses-devel
-          - onedrive
-          - openssl-devel
-          - pyenv
-          - rclone
-          - readline-devel
-          - sqlite3-devel
-          - tailscale
-          - tealdeer
+          #- pyenv
+          #- tealdeer
           - telnet
-          - tk-devel
-          - vagrant
-          - virtualbox
-          - virtualbox
           - whois
-          - xz
-          - xz-devel
-          - yast2-docker
-          - yq
-          - yt-dlp
-          - zlib-devel
+          #- xz
+          #- yq
+          #- yt-dlp
           - zsh
-
+          - unzip
+          - tmux
+          - tmuxinator
+      
 
     - name: Install pip packages
       ansible.builtin.pip:
@@ -88,12 +46,8 @@
           - awscli
           - awscli-local
           - docker-compose
-          - fabric3
-          - jsonpickle
-          - localstack
-          - pipenv
+          - poetry
           - requests
-          - terraform-local
           - urllib3
 
     - name: Ensure fonts directory exist.
@@ -134,56 +88,6 @@
       args:
         creates: $HOME/.oh-my-zsh/custom/themes/powerlevel10k/README.md
 
-    - name: Add the flathub flatpak repository remote to the user installation
-      community.general.flatpak_remote:
-        name: flathub
-        state: present
-        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-        method: user
-
-    - name: Install desired flatpak from flathub
-      become: no
-      community.general.flatpak:
-        state: present
-        name:
-          - com.bitwarden.desktop
-          - com.emqx.MQTTX
-          - com.getpostman.Postman
-          - com.github.tchx84.Flatseal
-          - com.github.unrud.VideoDownloader
-          - com.jgraph.drawio.desktop
-          - com.microsoft.Edge
-          - com.spotify.Client
-          - io.dbeaver.DBeaverCommunity
-          - io.dbeaver.DBeaverCommunity.Client.pgsql
-          - net.ankiweb.Anki
-          - net.cozic.joplin_desktop
-          - net.xmind.XMind
-          - org.cryptomator.Cryptomator
-          - org.filezillaproject.Filezilla
-          - org.gimp.GIMP
-          - org.gnome.Boxes
-          - org.gnome.Boxes.Extension.OsinfoDb
-          - org.gnome.meld
-          - org.keepassxc.KeePassXC
-          - org.mozilla.Thunderbird
-          - org.raspberrypi.rpi-imager
-          - org.remmina.Remmina
-          - org.telegram.desktop
-          - org.wireshark.Wireshark
-          - us.zoom.Zoom
-        method: user
-
-    - name: Configure shell and groups in my user
-      become: yes
-      ansible.builtin.user:
-        name: "cristian"
-        shell: /bin/zsh
-        groups:
-          - docker
-          - vboxusers
-        append: yes
-
     - name: Add custon zsh configuration in a separated file
       ansible.builtin.lineinfile:
         path: "{{ lookup('env', 'HOME') }}/.zshrc"
@@ -212,18 +116,3 @@
         owner: cristian
         group: cristian
         mode: '0644'
-
-    - name: Update tldr cache
-      ansible.builtin.shell: tldr --update
-
-    - name: Start and enable docker service.
-      ansible.builtin.systemd:
-        name: docker
-        state: started
-        enabled: yes
-
-    - name: Start and enable tailscale service.
-      ansible.builtin.systemd:
-        name: tailscaled
-        state: started
-        enabled: yes

@@ -1,11 +1,8 @@
-PATH=$(pyenv root)/shims:$HOME/.local/bin:$HOME/bin:$PATH
-
 #
 # Alias definition
 #
 alias ls="lsd"
 alias diff="colordiff"
-alias open="xdg-open"
 
 #
 # Functions

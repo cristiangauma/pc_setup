@@ -2,7 +2,7 @@
 echo "Installing dependencies..."
 
 # Install dependencies
-sudo zypper install -y git make python3-pip
+sudo apt-get install -y git make python3-pip
 python3 -m pip install --user ansible
 
 /home/cristian/.local/bin/ansible-galaxy install gantsign.oh-my-zsh
