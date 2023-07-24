@@ -30,7 +30,7 @@ getLastTag() {
 # Only ask ssh key key once per session login
 #
 keychain --nogui $HOME/.ssh/id_ed25519
-source $HOME/.keychain/$HOSTNAME-sh
+source $HOME/.keychain/$(cat /etc/hostname)-sh
 
 #
 # p10k
