@@ -29,10 +29,21 @@ getLastTag() {
 #
 # Only ask ssh key key once per session login
 #
-keychain --nogui $HOME/.ssh/id_ed25519
+keychain --nogui $HOME/.ssh/id_ed25519 $HOME/.ssh/personal
 source $HOME/.keychain/$(cat /etc/hostname)-sh
 
 #
 # p10k
 #
 [[ ! -f  ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH:/home/cristian/bin:/home/cristian/.local/bin"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -) "
+fi
+export VAGRANT_DEFAULT_PROVIDER="virtualbox"
+
+export PATH=$PATH:/home/cristian/bin
+
+alias ssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
