@@ -31,6 +31,8 @@
           - tmux
           - tmuxinator
           - keychain
+          - undertime
+          - vim
       
     - name: Install lsd from their github page
       ansible.builtin.shell: curl -L https://github.com/lsd-rs/lsd/releases/download/0.23.1/lsd_0.23.1_amd64.deb -o /tmp/lsd_0.23.1_amd64.deb && sudo dpkg -i /tmp/lsd_0.23.1_amd64.deb
@@ -128,3 +130,20 @@
         owner: cristian
         group: cristian
         mode: '0644'
+
+    - name: Install multiple packages
+      community.general.flatpak:
+        name:
+          - com.brave.Browser
+          - org.telegram.desktop
+          - com.microsoft.Edge
+          - org.gimp.GIMP
+          - com.bitwarden.desktop
+          - com.github.unrud.VideoDownloader
+          - org.mozilla.Thunderbird
+          - tv.plex.PlexDesktop
+          - sh.ppy.osu
+          - io.github.pwr_solaar.solaar
+          - org.videolan.VLC
+          - com.discordapp.Discord
+          - org.gnome.World.PikaBackup
